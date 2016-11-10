@@ -1,0 +1,19 @@
+{
+  "name": "linkeddatajournalism",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/linkeddatajournalism/linkeddatajournalism.github.io.git"
+  },
+  "author": "Rein van t Veer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/linkeddatajournalism/linkeddatajournalism.github.io/issues"
+  },
+  "homepage": "https://github.com/linkeddatajournalism/linkeddatajournalism.github.io#readme"
+}
