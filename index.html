@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Linked Data Journalism on drone attacks, single page demo application">
+    <meta name="author" content="Rein van 't Veer">
 
     <title>Linked Data Journalism</title>
 
@@ -26,9 +26,14 @@
     <!-- YASGUI -->
     <script src='//cdn.jsdelivr.net/yasqe/2.11.4/yasqe.bundled.min.js'></script>
     <link href='//cdn.jsdelivr.net/yasqe/2.11.5/yasqe.min.css' rel='stylesheet' type='text/css'/>
+    <link href='//cdn.jsdelivr.net/yasr/2.9.2/yasr.min.css' rel='stylesheet' type='text/css'/>
+    <script src='//cdn.jsdelivr.net/yasr/2.9.2/yasr.bundled.min.js'></script>
 
+    <!-- RDFstore-js -->
     <script src="js/rdfstore/rdfstore_min.js"></script>
 
+    <!-- JQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -60,7 +65,7 @@
         <!-- /.container -->
     </nav>
 
-        <img class="img-responsive img-center" src="images/drone-161414_1280.png" alt="Linked Data Journalism">
+    <img class="img-responsive img-center" src="images/drone-161414_1280.png" alt="Linked Data Journalism">
 
     <section id="about">
         <div class="container">
@@ -68,7 +73,7 @@
                 <div class="col-lg-12">
                     <h1 class="section-heading">About</h1>
                     <p class="lead section-lead">This data journalism piece was made in response to a Linked Data challenge</p>
-                    <p class="section-paragraph">The challenge was posed under the wings of the <a href="http://www.pilod.nl/wiki/UX_Linked_Data_Challenge">Platform Linked Data Netherlands (PLDN)</a>. To be specific, the challenge was put to make a linked data based application that allows some form of data journalism to be executed on data about drone attacks. The particulars of this data set are <a href="#sources">below</a>. The team that picked up the challenge consists of Rob Lemmens, Paul Roodenburg, Stanislav Ronzhin, Sam Ubbels, and Rein van 't Veer. The challenge was posed by Pieter van Everdingen. The initial data set was converted and provided by Wouter Beek.</p>
+                    <p class="section-paragraph">The challenge was posed under the wings of the <a href="http://www.pilod.nl/wiki/UX_Linked_Data_Challenge">Platform Linked Data Netherlands (PLDN)</a>. To be specific, the challenge was put to make a linked data based application that allows some form of data journalism to be executed on data about drone attacks. The challenge was posed by Pieter van Everdingen. The initial data set was converted and provided by Wouter Beek. The particulars of this data set are <a href="#sources">below</a>. The team that picked up the challenge consists of Rob Lemmens, Paul Roodenburg, Stanislav Ronzhin, Sam Ubbels, and Rein van 't Veer. </p>
                 </div>
             </div>
         </div>
@@ -83,9 +88,10 @@
                     <p class="section-paragraph">The data was procured from the <a href="https://www.thebureauinvestigates.com/category/projects/drones/drones-graphs/">Bureau Investigates</a> through an open publication of data on drone attacks. This data was then converted and enriched to Linked Data. Due to the licensing of the original set, the data itself cannot be provided at the moment. For the queries below, the data must be pasted in the box below.</p>
                     <p class="lead section-lead">Paste your n3, turtle or n-triples below.</p>
                     <pre>
-                        <code id="context" cols="80" rows="15" data-trim contenteditable>
+                        <code id="context" data-trim contenteditable>
                         </code>
                     </pre>
+                    <button class="btn-primary">Load data</button>
 
                     <p class="lead section-lead">Software</p>
                     <p class="section-paragraph">
@@ -93,7 +99,6 @@
                         <li><a href="https://github.com/OpenTriply/YASGUI">YASGUI</a> for SPARQL Query editor </li>
                         <li><a href="https://github.com/antoniogarrote/rdfstore-js">rdfstore-js</a> for graph analysis</li>
                         </ul>
-                    </p>
                     <p class="lead section-lead">Other</p>
                     <ul>
                         <li>A free <a href="http://getbootstrap.com/">Bootstrap</a> template was used for the layout: the <a href="https://startbootstrap.com/template-overviews/full-width-pics/">Full width pics template</a>.</li>
@@ -112,14 +117,17 @@
                     <p class="lead section-lead">What is the level of collateral damage from the drone attacks?</p>
                     <p class="section-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, suscipit, rerum quos facilis repellat architecto commodi officia atque nemo facere eum non illo voluptatem quae delectus odit vel itaque amet.</p>
                     <p>
-                        <textarea type="text" class="form-control" id="collateral-damage-query">
+                        <textarea class="form-control" id="collateral-damage-query">
 select ?person where {
 ?person    <http://xmlns.com/foaf/0.1/knows>+    ?person .
 }
                         </textarea>
-                        <button class="btn-primary">Run query</button>
                     </p>
+                    <button class="btn-primary">Run query</button>
                     <script>YASQE.fromTextArea(document.getElementById("collateral-damage-query"));</script>
+                    <div id="collateral-damage-showcase"></div>
+                    <script>YASR(document.getElementById("collateral-damage-showcase"));</script>
+
                 </div>
             </div>
         </div>
@@ -133,13 +141,13 @@ select ?person where {
                     <p class="lead section-lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                     <p class="section-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, suscipit, rerum quos facilis repellat architecto commodi officia atque nemo facere eum non illo voluptatem quae delectus odit vel itaque amet.</p>
                     <p>
-                        <textarea type="text" class="form-control" id="da-effective-query">
+                        <textarea class="form-control" id="da-effective-query">
 select ?person where {
 ?person    <http://xmlns.com/foaf/0.1/knows>+    ?person .
 }
                         </textarea>
-                        <button class="btn-primary">Run query</button>
                     </p>
+                    <button class="btn-primary">Run query</button>
                     <script>YASQE.fromTextArea(document.getElementById("da-effective-query"));</script>
                 </div>
             </div>
@@ -154,13 +162,13 @@ select ?person where {
                     <p class="lead section-lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                     <p class="section-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, suscipit, rerum quos facilis repellat architecto commodi officia atque nemo facere eum non illo voluptatem quae delectus odit vel itaque amet.</p>
                     <p>
-                        <textarea type="text" class="form-control" id="da-reports-query">
+                        <textarea class="form-control" id="da-reports-query">
 select ?person where {
 ?person    <http://xmlns.com/foaf/0.1/knows>+    ?person .
 }
                         </textarea>
-                        <button class="btn-primary">Run query</button>
                     </p>
+                    <button class="btn-primary">Run query</button>
                     <script>YASQE.fromTextArea(document.getElementById("da-reports-query"));</script>
                 </div>
             </div>
