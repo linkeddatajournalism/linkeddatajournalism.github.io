@@ -7,7 +7,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var mimeType = 'text/turtle';
+var mimeType = 'text/n3';
 
 var journalismGraph = rdfstore.create(function (err, store) {
   if (err) return console.error(err);
@@ -23,33 +23,75 @@ var LDJapp = function () {
     key: 'bindLoadDataButton',
     value: function bindLoadDataButton(buttonId, dataDivId) {
       $('#' + buttonId).click(function () {
-        $('#' + buttonId).text('Loading...');
+        var button = $('#' + buttonId);
         var data = $('#' + dataDivId).val();
+        button.text('Loading...');
+
         journalismGraph.load(mimeType, data, function (err, numberOfTriples) {
           if (err) {
-            $('#' + buttonId).text('There was an error (see console log)');
+            button.text('There was an error (see console log)');
             return console.error(err);
           }
-          $('#' + buttonId).text(numberOfTriples + ' triples loaded!');
+          button.text(numberOfTriples + ' triples loaded!');
           console.log(numberOfTriples + ' triples loaded');
         });
       });
     }
   }, {
     key: 'bindQueryButton',
-    value: function bindQueryButton(buttonId, yasqe) {
+    value: function bindQueryButton(buttonId, yasqe, yasr) {
+      var _this = this;
+
       $('#' + buttonId).click(function () {
         var sparqlQuery = yasqe.getValue();
         console.log(sparqlQuery);
         journalismGraph.execute(sparqlQuery, function (status, results) {
           console.log(status);
           if (results.length) {
-            console.log(results);
+            $('#' + buttonId).text('Query yielded ' + results.length + ' results');
+            var sparqlJson = _this.resultsToSPARQLJSON(results);
+            console.log(sparqlJson);
+            yasr.setResponse(sparqlJson);
           } else {
             alert('The query yielded no results');
           }
         });
       });
+    }
+  }, {
+    key: 'resultsToSPARQLJSON',
+    value: function resultsToSPARQLJSON(rdfStoreResult) {
+      var _this2 = this;
+
+      var sparqlJSON = {};
+      sparqlJSON.head = {
+        link: [],
+        vars: Object.keys(rdfStoreResult[0])
+      };
+      sparqlJSON.results = {
+        distinct: false,
+        ordered: false,
+        bindings: rdfStoreResult.map(function (resultitem) {
+          var transformedResult = resultitem;
+
+          Object.keys(resultitem).forEach(function (key) {
+            transformedResult[key].type = _this2.mapType(transformedResult[key].token);
+            delete transformedResult[key].token;
+          });
+          return transformedResult;
+        })
+      };
+
+      return JSON.stringify(sparqlJSON);
+    }
+  }, {
+    key: 'mapType',
+    value: function mapType(type) {
+      var types = {
+        uri: 'uri',
+        literal: 'typed-literal'
+      };
+      return types[type];
     }
   }]);
 

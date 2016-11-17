@@ -130,12 +130,12 @@ select ?person where {
 }</textarea>
                     </p>
                     <button class="btn-primary" id="collateral-damage-query-button">Run query</button>
-                    <script>
-                        var collateralDamageYASQE = YASQE.fromTextArea(document.getElementById("collateral-damage-query"));
-                        ldjApp.bindQueryButton("collateral-damage-query-button",collateralDamageYASQE);
-                    </script>
                     <div id="collateral-damage-showcase"></div>
-                    <script>YASR(document.getElementById("collateral-damage-showcase"));</script>
+                    <script>
+                      var collateralDamageYASQE = YASQE.fromTextArea(document.getElementById("collateral-damage-query"));
+                      var collateralDamageYASR = YASR(document.getElementById("collateral-damage-showcase"));
+                      ldjApp.bindQueryButton("collateral-damage-query-button",collateralDamageYASQE, collateralDamageYASR);
+                    </script>
                 </div>
             </div>
         </div>
@@ -156,12 +156,12 @@ select ?person where {
 }</textarea>
                     </p>
                     <button class="btn-primary" id="da-effective-query-button">Run query</button>
+                    <div id="da-effective-showcase"></div>
                     <script>
                       var effectiveYASQE = YASQE.fromTextArea(document.getElementById("da-effective-query"));
-                      ldjApp.bindQueryButton("da-effective-query-button", effectiveYASQE);
+                      var effectiveYASR = YASR(document.getElementById("da-effective-showcase"));
+                      ldjApp.bindQueryButton("da-effective-query-button", effectiveYASQE, effectiveYASR);
                     </script>
-                    <div id="da-effective-showcase"></div>
-                    <script>YASR(document.getElementById("da-effective-showcase"));</script>
                 </div>
             </div>
         </div>
@@ -182,12 +182,12 @@ select ?person where {
 }</textarea>
                     </p>
                     <button class="btn-primary" id="da-reports-query-button">Run query</button>
+                    <div id="da-reports-showcase"></div>
                     <script>
                       var reportsYASQE = YASQE.fromTextArea(document.getElementById("da-reports-query"));
-                      ldjApp.bindQueryButton("da-reports-query-button", reportsYASQE);
+                      var reportsYASR = YASR(document.getElementById("da-reports-showcase"));
+                      ldjApp.bindQueryButton("da-reports-query-button", reportsYASQE, reportsYASR);
                     </script>
-                    <div id="da-reports-showcase"></div>
-                    <script>YASR(document.getElementById("da-reports-showcase"));</script>
                 </div>
             </div>
         </div>
