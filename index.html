@@ -1,6 +1,7 @@
 <html lang="en">
 
 <head>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,8 +13,10 @@
     <!-- Theme template provided by https://startbootstrap.com/template-overviews/full-width-pics/ -->
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
+    <!-- Theme/template CSS -->
     <link href="css/full-width-pics.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -87,16 +90,13 @@
                 <div class="col-lg-12">
                     <h1 class="section-heading">Sources</h1>
                     <p class="lead section-lead">Data</p>
-                    <p class="section-paragraph">The data was procured from the <a href="https://www.thebureauinvestigates.com/category/projects/drones/drones-graphs/">Bureau Investigates</a> through an open publication of data on drone attacks. This data was then converted and enriched to Linked Data. Due to the licensing of the original set, the data itself cannot be provided at the moment. For the queries below, the data must be pasted in the box below.</p>
+                    <p class="section-paragraph">The data was procured from the <a href="https://www.thebureauinvestigates.com/category/projects/drones/drones-graphs/">Bureau for Investigative Journalism</a> through an open publication of data on drone attacks. This data was then converted and enriched to Linked Data. Due to the licensing of the original set, the data itself cannot be provided at the moment. For the queries below, the data must be pasted in the box below.</p>
                     <p class="lead section-lead">Paste your n3, turtle or n-triples below.</p>
-                    <pre><code id="triples" data-trim contenteditable>Paste your linked data here</code></pre>
+                    <textarea id="triples" placeholder="Paste your linked data here"></textarea>
                     <button class="btn-primary" id="loadDataButton">Load data</button>
                     <script>
-                        $('#triples').text();
-                        ldjApp.bindLoadDataButton(
-                            "loadDataButton",
-                            "triples"
-                        )
+                        $('#triples').val(''); // Empty the text
+                        ldjApp.bindLoadDataButton("loadDataButton", "triples");
                     </script>
 
                     <p class="lead section-lead">Software</p>
@@ -123,19 +123,16 @@
                     <p class="lead section-lead">What is the level of collateral damage from the drone attacks?</p>
                     <p class="section-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, suscipit, rerum quos facilis repellat architecto commodi officia atque nemo facere eum non illo voluptatem quae delectus odit vel itaque amet.</p>
                     <p>
+                        <label for="collateral-damage-query">Query</label>
                         <textarea class="form-control" id="collateral-damage-query">
 select ?person where {
 ?person    <http://xmlns.com/foaf/0.1/knows>+    ?person .
-}
-                        </textarea>
+}</textarea>
                     </p>
                     <button class="btn-primary" id="collateral-damage-query-button">Run query</button>
                     <script>
                         var collateralDamageYASQE = YASQE.fromTextArea(document.getElementById("collateral-damage-query"));
-                        ldjApp.bindQueryButton(
-                            "collateral-damage-query-button",
-                            collateralDamageYASQE
-                        );
+                        ldjApp.bindQueryButton("collateral-damage-query-button",collateralDamageYASQE);
                     </script>
                     <div id="collateral-damage-showcase"></div>
                     <script>YASR(document.getElementById("collateral-damage-showcase"));</script>
@@ -152,14 +149,17 @@ select ?person where {
                     <p class="lead section-lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                     <p class="section-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, suscipit, rerum quos facilis repellat architecto commodi officia atque nemo facere eum non illo voluptatem quae delectus odit vel itaque amet.</p>
                     <p>
+                        <label for="da-effective-query">Query</label>
                         <textarea class="form-control" id="da-effective-query">
 select ?person where {
 ?person    <http://xmlns.com/foaf/0.1/knows>+    ?person .
-}
-                        </textarea>
+}</textarea>
                     </p>
-                    <button class="btn-primary">Run query</button>
-                    <script>YASQE.fromTextArea(document.getElementById("da-effective-query"));</script>
+                    <button class="btn-primary" id="da-effective-query-button">Run query</button>
+                    <script>
+                      var effectiveYASQE = YASQE.fromTextArea(document.getElementById("da-effective-query"));
+                      ldjApp.bindQueryButton("da-effective-query-button", effectiveYASQE);
+                    </script>
                     <div id="da-effective-showcase"></div>
                     <script>YASR(document.getElementById("da-effective-showcase"));</script>
                 </div>
@@ -175,14 +175,17 @@ select ?person where {
                     <p class="lead section-lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                     <p class="section-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, suscipit, rerum quos facilis repellat architecto commodi officia atque nemo facere eum non illo voluptatem quae delectus odit vel itaque amet.</p>
                     <p>
+                        <label for="da-reports-query">Query</label>
                         <textarea class="form-control" id="da-reports-query">
 select ?person where {
 ?person    <http://xmlns.com/foaf/0.1/knows>+    ?person .
-}
-                        </textarea>
+}</textarea>
                     </p>
-                    <button class="btn-primary">Run query</button>
-                    <script>YASQE.fromTextArea(document.getElementById("da-reports-query"));</script>
+                    <button class="btn-primary" id="da-reports-query-button">Run query</button>
+                    <script>
+                      var reportsYASQE = YASQE.fromTextArea(document.getElementById("da-reports-query"));
+                      ldjApp.bindQueryButton("da-reports-query-button", reportsYASQE);
+                    </script>
                     <div id="da-reports-showcase"></div>
                     <script>YASR(document.getElementById("da-reports-showcase"));</script>
                 </div>
