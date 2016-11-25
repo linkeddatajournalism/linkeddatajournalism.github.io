@@ -47,6 +47,7 @@ class LDJapp {
         console.log(status);
         if (results.length) {
           $(`#${buttonId}`).text(`Query yielded ${results.length} results`);
+          console.log(results);
           const sparqlJson = this.resultsToSPARQLJSON(results);
           console.log(sparqlJson);
           yasr.setResponse(sparqlJson);
@@ -71,7 +72,10 @@ class LDJapp {
 
         Object.keys(resultitem)
           .forEach(key => {
-            transformedResult[key].type = this.mapType(transformedResult[key].token)
+            transformedResult[key].type = this.mapType(transformedResult[key].token);
+            if (parseFloat(transformedResult[key].value)) {
+              transformedResult[key].datatype = 'http://www.w3.org/2001/XMLSchema#float';
+            }
             delete transformedResult[key].token;
           });
         return transformedResult

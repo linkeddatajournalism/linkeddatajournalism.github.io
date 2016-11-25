@@ -66,6 +66,7 @@ var LDJapp = function () {
           console.log(status);
           if (results.length) {
             $('#' + buttonId).text('Query yielded ' + results.length + ' results');
+            console.log(results);
             var sparqlJson = _this2.resultsToSPARQLJSON(results);
             console.log(sparqlJson);
             yasr.setResponse(sparqlJson);
@@ -93,6 +94,9 @@ var LDJapp = function () {
 
           Object.keys(resultitem).forEach(function (key) {
             transformedResult[key].type = _this3.mapType(transformedResult[key].token);
+            if (parseFloat(transformedResult[key].value)) {
+              transformedResult[key].datatype = 'http://www.w3.org/2001/XMLSchema#float';
+            }
             delete transformedResult[key].token;
           });
           return transformedResult;
