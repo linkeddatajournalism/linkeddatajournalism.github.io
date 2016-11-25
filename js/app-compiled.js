@@ -61,9 +61,12 @@ var LDJapp = function () {
 
       $('#' + buttonId).click(function () {
         var sparqlQuery = yasqe.getValue();
-        console.log(sparqlQuery);
         journalismGraph.execute(sparqlQuery, function (status, results) {
           console.log(status);
+          if (!results) {
+            alert(status);
+            return console.error(status);
+          }
           if (results.length) {
             $('#' + buttonId).text('Query yielded ' + results.length + ' results');
             console.log(results);
@@ -94,8 +97,8 @@ var LDJapp = function () {
 
           Object.keys(resultitem).forEach(function (key) {
             transformedResult[key].type = _this3.mapType(transformedResult[key].token);
-            if (parseFloat(transformedResult[key].value)) {
-              transformedResult[key].datatype = 'http://www.w3.org/2001/XMLSchema#float';
+            if (parseFloat(transformedResult[key].value) || parseFloat(transformedResult[key].value) === 0) {
+              transformedResult[key].datatype = 'http://www.w3.org/2001/XMLSchema#double';
             }
             delete transformedResult[key].token;
           });

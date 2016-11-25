@@ -32,7 +32,7 @@
     <script src='//cdn.jsdelivr.net/yasr/2.9.2/yasr.bundled.min.js'></script>
 
     <!-- RDFstore-js -->
-    <script src="js/rdfstore/rdfstore_min.js"></script>
+    <script src="js/rdfstore/rdfstore.js"></script>
 
     <!-- JQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -71,7 +71,7 @@
         <!-- /.container -->
     </nav>
 
-    <img class="img-responsive img-center" src="images/drone-161414_1280.png" alt="Linked Data Journalism">
+    <img class="img-responsive img-center" src="images/drone-161414_1280.png" alt="Linked Data Journalism" style="height: 300px">
 
     <section id="about">
         <div class="container">
@@ -116,12 +116,11 @@
                     <h1 class="section-heading">Collateral Damage</h1>
                     <p class="lead section-lead">Type occurence and average kills per type:</p>
                     <p class="section-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, suscipit, rerum quos facilis repellat architecto commodi officia atque nemo facere eum non illo voluptatem quae delectus odit vel itaque amet.</p>
-                    <p>
-                        <label for="collateral-damage-query">Query</label>
+                    <label for="collateral-damage-query">Query</label>
                         <textarea class="form-control" id="collateral-damage-query">
 PREFIX drs: <https://vrijheidzondermaar.nl/def#>
-select ?type (count (distinct ?s) as ?occurence) (AVG(?maxCas) as ?maxAvg) (AVG(?minCas) as ?minAvg)
-where {
+select ?aggregateType (AVG(?maxCas) as ?maxCasualtiesAverage) (AVG(?maxCollateralCasualties) as ?maxCollateralCasualtiesAverage)
+where { {
     ?s a drs:Strike;
         drs:typeOfAttack ?type;
         drs:maximumCasualties ?maxCas;
@@ -131,15 +130,35 @@ where {
         drs:maximumCivilianCasualties ?maxCivCas;
         drs:minimumCivilianCasualties ?minCivCas;
         drs:Country ?country .
-} group by ?type</textarea>
-                    </p>
-                    <button class="btn-primary" id="collateral-damage-query-button">Run query</button>
-                    <div id="collateral-damage-showcase"></div>
-                    <script>
-                      var collateralDamageYASQE = YASQE.fromTextArea(document.getElementById("collateral-damage-query"));
-                      var collateralDamageYASR = YASR(document.getElementById("collateral-damage-showcase"));
-                      ldjApp.bindQueryButton("collateral-damage-query-button",collateralDamageYASQE, collateralDamageYASR);
-                    </script>
+    bind((?minChildCas + ?minCivCas) as ?minCollateralCasualties)
+    bind((?maxChildCas + ?maxCivCas) as ?maxCollateralCasualties)
+
+  bind("Drone strike" as ?aggregateType)
+  filter(regex(?type, ".*rone.*"))
+} union {
+        ?s a drs:Strike;
+        drs:typeOfAttack ?type;
+        drs:maximumCasualties ?maxCas;
+        drs:minimumCasualties ?minCas;
+        drs:maximumChildCasualties ?maxChildCas;
+        drs:minimumChildCasualties ?minChildCas;
+        drs:maximumCivilianCasualties ?maxCivCas;
+        drs:minimumCivilianCasualties ?minCivCas;
+        drs:Country ?country .
+    bind((?minChildCas + ?minCivCas) as ?minCollateralCasualties)
+    bind((?maxChildCas + ?maxCivCas) as ?maxCollateralCasualties)
+  	bind("Airstrike" as ?aggregateType)
+  filter(regex(?type, ".*irstrike.*"))
+} }
+group by ?aggregateType</textarea>
+                        <button class="btn-primary" id="collateral-damage-query-button">Run query</button>
+                        <div id="collateral-damage-showcase"></div>
+                        <script>
+                          var collateralDamageYASQE = YASQE.fromTextArea(document.getElementById("collateral-damage-query"));
+                          var collateralDamageYASR = YASR(document.getElementById("collateral-damage-showcase"));
+                          ldjApp.bindQueryButton("collateral-damage-query-button",collateralDamageYASQE, collateralDamageYASR);
+                        </script>
+                    <p>
                 </div>
             </div>
         </div>

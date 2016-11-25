@@ -42,9 +42,12 @@ class LDJapp {
   bindQueryButton(buttonId, yasqe, yasr) {
     $(`#${buttonId}`).click(() => {
       const sparqlQuery = yasqe.getValue();
-      console.log(sparqlQuery);
       journalismGraph.execute(sparqlQuery, (status, results) => {
         console.log(status);
+        if (!results) {
+          alert(status);
+          return console.error(status);
+        }
         if (results.length) {
           $(`#${buttonId}`).text(`Query yielded ${results.length} results`);
           console.log(results);
@@ -73,8 +76,8 @@ class LDJapp {
         Object.keys(resultitem)
           .forEach(key => {
             transformedResult[key].type = this.mapType(transformedResult[key].token);
-            if (parseFloat(transformedResult[key].value)) {
-              transformedResult[key].datatype = 'http://www.w3.org/2001/XMLSchema#float';
+            if (parseFloat(transformedResult[key].value) || parseFloat(transformedResult[key].value) === 0) {
+              transformedResult[key].datatype = 'http://www.w3.org/2001/XMLSchema#double';
             }
             delete transformedResult[key].token;
           });
