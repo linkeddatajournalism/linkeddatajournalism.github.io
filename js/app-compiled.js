@@ -20,27 +20,44 @@ var LDJapp = function () {
   }
 
   _createClass(LDJapp, [{
+    key: 'getData',
+    value: function getData(fileURLs) {
+      var _this = this;
+
+      fileURLs.forEach(function (file) {
+        $.get(file, function (data) {
+          return _this.loadData(data);
+        });
+        console.log('Loading ' + file);
+      });
+    }
+  }, {
+    key: 'loadData',
+    value: function loadData(data) {
+      alert('The data will now load. This will take a few seconds, I\'ll tell you when I\'m done');
+      journalismGraph.load(mimeType, data, function (err, numberOfTriples) {
+        if (err) {
+          console.log('There was error ' + err);
+          alert('There was an error loading the data');
+          return console.stack;
+        }
+        console.log(numberOfTriples + ' triples loaded');
+        alert('The data was loaded successfully');
+      });
+    }
+  }, {
     key: 'bindLoadDataButton',
     value: function bindLoadDataButton(buttonId, dataDivId) {
       $('#' + buttonId).click(function () {
         var button = $('#' + buttonId);
         var data = $('#' + dataDivId).val();
         button.text('Loading...');
-
-        journalismGraph.load(mimeType, data, function (err, numberOfTriples) {
-          if (err) {
-            button.text('There was an error (see console log)');
-            return console.error(err);
-          }
-          button.text(numberOfTriples + ' triples loaded!');
-          console.log(numberOfTriples + ' triples loaded');
-        });
       });
     }
   }, {
     key: 'bindQueryButton',
     value: function bindQueryButton(buttonId, yasqe, yasr) {
-      var _this = this;
+      var _this2 = this;
 
       $('#' + buttonId).click(function () {
         var sparqlQuery = yasqe.getValue();
@@ -49,7 +66,7 @@ var LDJapp = function () {
           console.log(status);
           if (results.length) {
             $('#' + buttonId).text('Query yielded ' + results.length + ' results');
-            var sparqlJson = _this.resultsToSPARQLJSON(results);
+            var sparqlJson = _this2.resultsToSPARQLJSON(results);
             console.log(sparqlJson);
             yasr.setResponse(sparqlJson);
           } else {
@@ -61,7 +78,7 @@ var LDJapp = function () {
   }, {
     key: 'resultsToSPARQLJSON',
     value: function resultsToSPARQLJSON(rdfStoreResult) {
-      var _this2 = this;
+      var _this3 = this;
 
       var sparqlJSON = {};
       sparqlJSON.head = {
@@ -75,7 +92,7 @@ var LDJapp = function () {
           var transformedResult = resultitem;
 
           Object.keys(resultitem).forEach(function (key) {
-            transformedResult[key].type = _this2.mapType(transformedResult[key].token);
+            transformedResult[key].type = _this3.mapType(transformedResult[key].token);
             delete transformedResult[key].token;
           });
           return transformedResult;

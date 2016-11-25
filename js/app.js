@@ -10,20 +10,32 @@ const journalismGraph = rdfstore.create((err, store) => {
 });
 
 class LDJapp {
+  getData(fileURLs) {
+    fileURLs.forEach(file => {
+      $.get(file, data => this.loadData(data));
+      console.log(`Loading ${file}`);
+    });
+  }
+
+  loadData(data) {
+    alert('The data will now load. This will take a few seconds, I\'ll tell you when I\'m done');
+    journalismGraph.load(mimeType, data, (err, numberOfTriples) => {
+      if (err) {
+        console.log(`There was error ${err}`);
+        alert('There was an error loading the data');
+        return console.stack;
+      }
+      console.log(numberOfTriples + ' triples loaded');
+      alert('The data was loaded successfully');
+    });
+
+  }
+
   bindLoadDataButton(buttonId, dataDivId) {
     $(`#${buttonId}`).click(() => {
       const button = $(`#${buttonId}`);
       const data = $(`#${dataDivId}`).val();
       button.text('Loading...');
-
-      journalismGraph.load(mimeType, data, (err, numberOfTriples) => {
-        if (err) {
-          button.text('There was an error (see console log)');
-          return console.error(err);
-        }
-        button.text(numberOfTriples + ' triples loaded!');
-        console.log(numberOfTriples + ' triples loaded');
-      });
     });
   }
 

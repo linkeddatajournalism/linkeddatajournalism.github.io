@@ -3,5 +3,5 @@ A new approach on data journalism: share your data, analysis methods and result 
 See it live on linkeddatajournalism.github.io
  
 # TODO
-- [ ] Commit the data set itself to the repo
-- [ ] 
+- [X] Commit the data set itself to the repo
+- [ ] Notify user and load data in background

@@ -42,6 +42,7 @@
 </head>
 
 <body>
+    <script type="application/javascript">ldjApp.getData(['data/AllDroneStrikes.n3']);</script>
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -91,14 +92,7 @@
                     <h1 class="section-heading">Sources</h1>
                     <p class="lead section-lead">Data</p>
                     <p class="section-paragraph">The data was procured from the <a href="https://www.thebureauinvestigates.com/category/projects/drones/drones-graphs/">Bureau for Investigative Journalism</a> through an open publication of data on drone attacks. This data was then converted and enriched to Linked Data. Due to the licensing of the original set, the data itself cannot be provided at the moment. For the queries below, the data must be pasted in the box below.</p>
-                    <p class="lead section-lead">Paste your n3, turtle or n-triples below.</p>
-                    <textarea id="triples" placeholder="Paste your linked data here"></textarea>
-                    <button class="btn-primary" id="loadDataButton">Load data</button>
-                    <script>
-                        $('#triples').val(''); // Empty the text
-                        ldjApp.bindLoadDataButton("loadDataButton", "triples");
-                    </script>
-
+                    <p class="section-paragraph">The curated data was committed to the repository this page is served from, see <a href="https://github.com/linkeddatajournalism/linkeddatajournalism.github.io/tree/master/data">here</a></p>
                     <p class="lead section-lead">Software</p>
                     <p class="section-paragraph">
                         <ul>
@@ -120,14 +114,24 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="section-heading">Collateral Damage</h1>
-                    <p class="lead section-lead">What is the level of collateral damage from the drone attacks?</p>
+                    <p class="lead section-lead">Type occurence and average kills per type:</p>
                     <p class="section-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, suscipit, rerum quos facilis repellat architecto commodi officia atque nemo facere eum non illo voluptatem quae delectus odit vel itaque amet.</p>
                     <p>
                         <label for="collateral-damage-query">Query</label>
                         <textarea class="form-control" id="collateral-damage-query">
-select ?person where {
-?person    <http://xmlns.com/foaf/0.1/knows>+    ?person .
-}</textarea>
+PREFIX drs: <https://vrijheidzondermaar.nl/def#>
+select ?type (count (distinct ?s) as ?occurence) (AVG(?maxCas) as ?maxAvg) (AVG(?minCas) as ?minAvg)
+where {
+    ?s a drs:Strike;
+        drs:typeOfAttack ?type;
+        drs:maximumCasualties ?maxCas;
+        drs:minimumCasualties ?minCas;
+        drs:maximumChildCasualties ?maxChildCas;
+        drs:minimumChildCasualties ?minChildCas;
+        drs:maximumCivilianCasualties ?maxCivCas;
+        drs:minimumCivilianCasualties ?minCivCas;
+        drs:Country ?country .
+} group by ?type</textarea>
                     </p>
                     <button class="btn-primary" id="collateral-damage-query-button">Run query</button>
                     <div id="collateral-damage-showcase"></div>
@@ -145,14 +149,25 @@ select ?person where {
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="section-heading">Drone attacks ineffective?</h1>
-                    <p class="lead section-lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                    <h1 class="section-heading">Drone attacks ineffective</h1>
+                    <p class="lead section-lead">How effective are the drone strikes?</p>
                     <p class="section-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, suscipit, rerum quos facilis repellat architecto commodi officia atque nemo facere eum non illo voluptatem quae delectus odit vel itaque amet.</p>
                     <p>
                         <label for="da-effective-query">Query</label>
                         <textarea class="form-control" id="da-effective-query">
-select ?person where {
-?person    <http://xmlns.com/foaf/0.1/knows>+    ?person .
+PREFIX drs: <https://vrijheidzondermaar.nl/def#>
+select ?strike ?maxRatio
+where {
+    ?strike drs:maximumCasualties ?maxCas;
+        drs:minimumCasualties ?minCas;
+        drs:maximumChildCasualties ?maxChildCas;
+        drs:minimumChildCasualties ?minChildCas;
+        drs:maximumCivilianCasualties ?maxCivCas;
+        drs:minimumCivilianCasualties ?minCivCas;
+        drs:Country ?country .
+
+  BIND(((?maxCas - (?maxChildCas + ?maxCivCas)) / (?maxChildCas + ?maxCivCas)) as ?maxRatio)
+  filter (?maxCas > 0)
 }</textarea>
                     </p>
                     <button class="btn-primary" id="da-effective-query-button">Run query</button>
@@ -172,14 +187,20 @@ select ?person where {
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="section-heading">Reports inconsistent?</h1>
-                    <p class="lead section-lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                    <p class="lead section-lead">Range in reports</p>
                     <p class="section-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, suscipit, rerum quos facilis repellat architecto commodi officia atque nemo facere eum non illo voluptatem quae delectus odit vel itaque amet.</p>
                     <p>
                         <label for="da-reports-query">Query</label>
                         <textarea class="form-control" id="da-reports-query">
-select ?person where {
-?person    <http://xmlns.com/foaf/0.1/knows>+    ?person .
-}</textarea>
+PREFIX drs: <https://vrijheidzondermaar.nl/def#>
+select ?country (avg(?maxCas - ?minCas) as ?range)
+where {
+  ?s a drs:Strike;
+     drs:maximumCasualties ?maxCas;
+     drs:minimumCasualties ?minCas;
+     drs:Country ?country.
+
+} group by ?country</textarea>
                     </p>
                     <button class="btn-primary" id="da-reports-query-button">Run query</button>
                     <div id="da-reports-showcase"></div>
