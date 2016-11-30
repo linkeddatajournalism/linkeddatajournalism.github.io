@@ -186,13 +186,12 @@ where {
          drs:minimumChildCasualties ?minChildCas;
          drs:minimumCivilianCasualties ?mixCivCas;
          drs:Country ?country;
-         drs:strikeLink ?strikelink;
+         drs:strikeLink ?strikelink .
 optional {?strike drs:onTheMap ?map;
          drs:source ?source;
          drs:namingTheDead ?namingTheDead . }
 
-} order by desc (?maxCivCas)
-}</textarea>
+} order by desc (?maxCivCas)</textarea>
                     </p>
                     <button class="btn-primary" id="da-effective-query-button">Run query</button>
                     <div id="da-effective-showcase"></div>
