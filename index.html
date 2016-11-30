@@ -38,7 +38,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
     <!-- custom work for Linked Data Journalism Application -->
-    <script src="js/app-compiled.js"></script>
+    <script src="dist/js/app.js"></script>
 </head>
 
 <body>
@@ -113,9 +113,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="section-heading">Collateral Damage</h1>
-                    <p class="lead section-lead">Type occurence and average kills per type:</p>
-                    <p class="section-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, suscipit, rerum quos facilis repellat architecto commodi officia atque nemo facere eum non illo voluptatem quae delectus odit vel itaque amet.</p>
+                    <h1 class="section-heading">Drone attacks ineffective</h1>
+                    <p class="lead section-lead">Are drone attacks more effective than airstrikes?</p>
+                    <p class="section-paragraph">Drone strikes have been implemented by the United States government in order to be able to attack its enemies without having to put US army personnel in danger. Furthermore, they have a quicker response time, which allows for more efficient action when a target has been spotted. However, does this come at a cost? Are drone strikes more effective than airstrikes when it comes to the kill count and the collateral damage?</p>
+                    <p class="section-paragraph">The data suggest that there is little to no difference based on the analysis of drone (217 strikes) and airstrikes (114 strikes) in Yemen and Pakistan between 2006 and 2015. Even though drone strikes have a lower average kill count, they also have a lower average number of civilian casualties. If you compare these numbers both airstrikes and drone strikes have an average of 14.8 percent of civilian casualties among the dead.</p>
                     <label for="collateral-damage-query">Query</label>
                         <textarea class="form-control" id="collateral-damage-query">
 PREFIX drs: <https://vrijheidzondermaar.nl/def#>
@@ -168,25 +169,29 @@ group by ?aggregateType</textarea>
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="section-heading">Drone attacks ineffective</h1>
-                    <p class="lead section-lead">How effective are the drone strikes?</p>
-                    <p class="section-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, suscipit, rerum quos facilis repellat architecto commodi officia atque nemo facere eum non illo voluptatem quae delectus odit vel itaque amet.</p>
+                    <h1 class="section-heading">Collateral Damage</h1>
+                    <p class="lead section-lead">Justified Outrage?</p>
+                    <p class="section-paragraph">The ongoing drone strikes on militant targets by the US has sparked outrage among the public in Pakistan as well as in the US. Even though more precise attacks are promised, using new technology, civilian casualties are still not ruled out. But how justified is this outrage, are there really that many civilian casualties or are matters being exaggerated to create a negative image of the US?</p>
+                    <p class="section-paragraph">Out of the 675 strikes that are analysed in our data, more than a quarter (177 strikes) are responsible for at least one civilian casualty.  Of these 177 strikes, 89 strikes have caused 5 or more civilian casualties and 41 caused 10 or more civilian casualties. The most controversial strike was a strike on an alleged Taliban training camp, which turned out to be a school. 82 civilians died among which 70 children.</p>
                     <p>
                         <label for="da-effective-query">Query</label>
                         <textarea class="form-control" id="da-effective-query">
 PREFIX drs: <https://vrijheidzondermaar.nl/def#>
-select ?strike ?maxRatio
-where {
-    ?strike drs:maximumCasualties ?maxCas;
-        drs:minimumCasualties ?minCas;
-        drs:maximumChildCasualties ?maxChildCas;
-        drs:minimumChildCasualties ?minChildCas;
-        drs:maximumCivilianCasualties ?maxCivCas;
-        drs:minimumCivilianCasualties ?minCivCas;
-        drs:Country ?country .
+select ?strike ?maxCivCas ?maxChildCas ?strikelink ?source ?namingTheDead ?map
 
-  BIND(((?maxCas - (?maxChildCas + ?maxCivCas)) / (?maxChildCas + ?maxCivCas)) as ?maxRatio)
-  filter (?maxCas > 0)
+where {
+ ?strike a drs:Strike;
+         drs:maximumChildCasualties ?maxChildCas;
+         drs:maximumCivilianCasualties ?maxCivCas;
+         drs:minimumChildCasualties ?minChildCas;
+         drs:minimumCivilianCasualties ?mixCivCas;
+         drs:Country ?country;
+         drs:strikeLink ?strikelink;
+optional {?strike drs:onTheMap ?map;
+         drs:source ?source;
+         drs:namingTheDead ?namingTheDead . }
+
+} order by desc (?maxCivCas)
 }</textarea>
                     </p>
                     <button class="btn-primary" id="da-effective-query-button">Run query</button>

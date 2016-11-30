@@ -11429,3 +11429,6 @@
 <https://vrijheidzondermaar.nl/strike/yemen/248> <https://vrijheidzondermaar.nl/def#Country> "Yemen" .
 <https://vrijheidzondermaar.nl/strike/yemen/249> <https://vrijheidzondermaar.nl/def#Country> "Yemen" .
 <https://vrijheidzondermaar.nl/strike/yemen/251> <https://vrijheidzondermaar.nl/def#Country> "Yemen" .
+<https://vrijheidzondermaar.nl/strike/pakistan/6> <https://vrijheidzondermaar.nl/def#namingTheDead> "https://www.thebureauinvestigates.com/namingthedead/strikes/b6/?lang=en"^^<http://www.w3.org/2001/XMLSchema#anyURI> .
+<https://vrijheidzondermaar.nl/strike/pakistan/6> <https://vrijheidzondermaar.nl/def#source> "http://news.bbc.co.uk/2/hi/south_asia/6099946.stm"^^<http://www.w3.org/2001/XMLSchema#anyURI> .
+<https://vrijheidzondermaar.nl/strike/pakistan/6> <https://vrijheidzondermaar.nl/def#onTheMap> "https://www.google.nl/maps/place/34%C2%B048'20.0%22N+71%C2%B028'00.0%22E/@34.8267188,71.3459027,10.96z/data=!4m5!3m4!1s0x0:0x0!8m2!3d34.805556!4d71.466667?hl=nl"^^<http://www.w3.org/2001/XMLSchema#anyURI> .

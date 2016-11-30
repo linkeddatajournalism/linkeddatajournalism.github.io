@@ -75,11 +75,15 @@ class LDJapp {
 
         Object.keys(resultitem)
           .forEach(key => {
-            transformedResult[key].type = this.mapType(transformedResult[key].token);
-            if (parseFloat(transformedResult[key].value) || parseFloat(transformedResult[key].value) === 0) {
-              transformedResult[key].datatype = 'http://www.w3.org/2001/XMLSchema#double';
+            if (transformedResult[key]) {
+              transformedResult[key].type = this.mapType(transformedResult[key].token);
+              if (parseFloat(transformedResult[key].value) || parseFloat(transformedResult[key].value) === 0) {
+                  transformedResult[key].datatype = 'http://www.w3.org/2001/XMLSchema#double';
+              }
+              delete transformedResult[key].token;
+            } else {
+              delete transformedResult[key];
             }
-            delete transformedResult[key].token;
           });
         return transformedResult
       })
